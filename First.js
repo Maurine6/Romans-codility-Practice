@@ -41,3 +41,68 @@
 // N is an integer within the range [1…100,000];
 // each element of array V is an integer within the range [1…10,000];
 // string R is made only of the characters ‘A’ and/or ‘B’.
+
+
+// Here's the solution.
+function solution(R, V) {
+    let N = R.length;
+    let balanceA = 0;
+    let balanceB = 0;
+    let minA = 0;
+    let minB = 0;
+
+for (let i = 0; i < N; i++) {
+    if (R[i] === 'B') {
+        balanceA -= V[i];
+        balanceB += V[i];
+    } else {
+        balanceB -= V[i];
+        balanceA += V[i];
+    }
+    
+    minA = Math.min(minA, balanceA);
+    minB = Math.min(minB, balanceB);
+}
+
+return [Math.abs(minA), Math.abs(minB)];
+}
+
+// Test cases
+function runTest(R, V, expected) {
+    const result = solution(R, V);
+    console.log(`Input: R = "${R}", V = [${V}]`);
+    console.log(`Expected: [${expected}]`);
+    console.log(`Result: [${result}]`);
+    console.log(JSON.stringify(result) === JSON.stringify(expected) ? "PASS" : "FAIL");
+    console.log("---");
+}
+
+// Test case 1 (from example)
+runTest("BAABA", [2, 4, 1, 1, 2], [2, 4]);
+
+// Test case 2 (from example)
+runTest("ABAB", [10, 5, 10, 15], [0, 15]);
+
+// Test case 3 (from example)
+runTest("B", [100], [100, 0]);
+
+// Test case 4: All transfers to A
+runTest("AAA", [1, 2, 3], [0, 6]);
+
+// Test case 5: All transfers to B
+runTest("BBB", [1, 2, 3], [6, 0]);
+
+// Test case 6: Alternating transfers
+runTest("ABABAB", [1, 1, 1, 1, 1, 1], [0, 1]);
+
+// Test case 7: Large values
+runTest("AB", [10000, 10000], [0, 10000]);
+
+// Test case 8: Long sequence
+runTest("ABABABABABABABABABAB", Array(20).fill(100), [0, 100]);
+
+// Test case 9: Single large transfer
+runTest("A", [10000], [0, 10000]);
+
+// Test case 10: Edge case - empty transfers
+runTest("", [], [0, 0]);

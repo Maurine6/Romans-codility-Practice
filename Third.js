@@ -25,3 +25,39 @@
 
 // N and M are integers within the range [1..100,000];
 // each element of arrays A and B is an integer within the range [0..1,000,000,000].
+
+// Here's the solution.
+
+function solution(A, B) {
+    // Convert A into a Set for efficient lookup
+    const ASet = new Set(A);
+
+    // Find the minimum common element in B
+    const minCommonValue = B.reduce((acc, curr) => {
+        if (ASet.has(curr)) {
+            return Math.min(acc, curr);
+        }
+        return acc;
+    }, Infinity);
+
+    // Return -1 if no common element is found
+    return minCommonValue === Infinity ? -1 : minCommonValue;
+}
+
+// Test Cases
+const testCase1A = [1, 3, 2, 1];
+const testCase1B = [4, 2, 5, 3, 2];
+console.log("Test Case 1 Result:", solution(testCase1A, testCase1B)); // Expected output: 2
+
+const testCase2A = [2, 3];
+const testCase2B = [3, 3];
+console.log("Test Case 2 Result:", solution(testCase2A, testCase2B)); // Expected output: 3
+
+const testCase3A = [6, 7, 8, 9, 8];
+const testCase3B = [8, 10, 11, 12, 9];
+console.log("Test Case 3 Result:", solution(testCase3A, testCase3B)); // Expected output: 8
+
+// New Test Case: A[2,1], B[3,3]
+const newTestCaseA = [2, 1];
+const newTestCaseB = [3, 3];
+console.log("New Test Case Result:", solution(newTestCaseA, newTestCaseB)); // Expected output: -1

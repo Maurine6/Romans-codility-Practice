@@ -18,3 +18,45 @@
 
 // A, B, C and D are integers within the range [0..9].
 // In your solution, focus on correctness. The performance of your solution will not be the focus of the assessment.
+
+// Here's the solution.
+function solution(A, B, C, D) {
+    const digits = [A, B, C, D];
+    // A set is chosen because it automatically eliminates duplicates
+    const times = new Set();
+
+// Generate all permutations of the four digits
+for (let i = 0; i < 4; i++) {
+    for (let j = 0; j < 4; j++) {
+        if (j === i) continue;
+        for (let k = 0; k < 4; k++) {
+            if (k === i || k === j) continue;
+            for (let l = 0; l < 4; l++) {
+                if (l === i || l === j || l === k) continue;
+
+                // Forming hours and minutes (tens place and ones place)
+                const hours = digits[i] * 10 + digits[j];
+                const minutes = digits[k] * 10 + digits[l];
+
+                // Check if the time is valid
+                if (isValidTime(hours, minutes)) {
+                    times.add(hours * 100 + minutes);
+                }
+            }
+        }
+    }
+}
+
+// Return the count of unique times
+return times.size;
+
+// Helper function to check if a time is valid
+function isValidTime(hours, minutes) {
+    return hours >= 0 && hours <= 23 && minutes >= 0 && minutes <= 59;
+}
+}
+
+// Test cases
+console.log(solution(1, 8, 3, 2)); // Should return 6
+console.log(solution(2, 3, 3, 2)); // Should return 3
+console.log(solution(6, 2, 4, 7)); // Should return 0
